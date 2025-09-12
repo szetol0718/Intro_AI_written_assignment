@@ -1,5 +1,5 @@
 # Fdb version 4
-["pdflatex"] 1757655988.69322 "c:/Users/szeto/Desktop/cs440/written assignment/wa1/main.tex" "main.pdf" "main" 1757655989.51028 0
+["pdflatex"] 1757700953.5546 "c:/Users/szeto/Desktop/cs440/written assignment/wa1/main.tex" "main.pdf" "main" 1757700954.38552 0
   "C:/Users/szeto/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map" 1757646256 80909 eab91d9745dd2edfd62a31d53cd5fe15 ""
   "C:/Users/szeto/AppData/Local/MiKTeX/fonts/pk/ljfour/jknappen/ec/dpi600/ecbx1095.pk" 1757646374 28976 f432a9a884856912655a467bc8f840d9 ""
   "C:/Users/szeto/AppData/Local/MiKTeX/fonts/pk/ljfour/jknappen/ec/dpi600/ecbx1440.pk" 1757646377 40136 008c8d6ef24567e59e74ec70a22ffe5e ""
@@ -28,12 +28,10 @@
   "C:/Users/szeto/AppData/Local/Programs/MiKTeX/fonts/tfm/public/cm/cmsy6.tfm" 1136765053 1116 933a60c408fc0a863a92debe84b2d294 ""
   "C:/Users/szeto/AppData/Local/Programs/MiKTeX/fonts/tfm/public/cm/cmsy8.tfm" 1136765053 1120 8b7d695260f3cff42e636090a8002094 ""
   "C:/Users/szeto/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi10.pfb" 1247596667 36299 5f9df58c2139e7edcf37c8fca4bd384d ""
-  "C:/Users/szeto/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi8.pfb" 1247596666 35469 dcf3a5f2fc1862f5952e3ee5eb1d98c4 ""
   "C:/Users/szeto/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr10.pfb" 1247596667 35752 024fb6c41858982481f6968b5fc26508 ""
   "C:/Users/szeto/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr8.pfb" 1247596667 32726 39f0f9e62e84beb801509898a605dbd5 ""
   "C:/Users/szeto/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy10.pfb" 1247596667 32569 5e5ddc8df908dea60932f3c484a54c0d ""
   "C:/Users/szeto/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy8.pfb" 1247596667 32626 5abc8bb2f28aa647d4c70f8ea38cc0d3 ""
-  "C:/Users/szeto/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/symbols/msam10.pfb" 1247596673 31764 459c573c03a4949a528c2cc7f557e217 ""
   "C:/Users/szeto/AppData/Local/Programs/MiKTeX/tex/context/base/mkii/supp-pdf.mkii" 1580390158 71627 94eb9990bed73c364d7f53f960cc8c5b ""
   "C:/Users/szeto/AppData/Local/Programs/MiKTeX/tex/generic/bigintcalc/bigintcalc.sty" 1576433602 40635 c40361e206be584d448876bba8a64a3b ""
   "C:/Users/szeto/AppData/Local/Programs/MiKTeX/tex/generic/bitset/bitset.sty" 1575926576 33961 6b5c75130e435b2bfdb9f480a09a39f9 ""
@@ -92,10 +90,10 @@
   "C:/Users/szeto/AppData/Local/Programs/MiKTeX/tex/latex/rerunfilecheck/rerunfilecheck.sty" 1751104012 9684 a33a14b82ce60d6e77cb9be689d79ee6 ""
   "C:/Users/szeto/AppData/Local/Programs/MiKTeX/tex/latex/tools/calc.sty" 1749468414 10374 2ffd4f27c7f90b8a300608069537743c ""
   "C:/Users/szeto/AppData/Local/Programs/MiKTeX/tex/latex/url/url.sty" 1388490452 12796 8edb7d69a20b857904dd0ea757c14ec9 ""
-  "c:/Users/szeto/Desktop/cs440/written assignment/wa1/main.tex" 1757655988 5358 cd1d5708ce223aab57ab2c651ac428ff ""
-  "main.aux" 1757655989 558 d916a2740623389498794c88240bcdf0 "pdflatex"
-  "main.out" 1757655989 0 d41d8cd98f00b204e9800998ecf8427e "pdflatex"
-  "main.tex" 1757655988 5358 cd1d5708ce223aab57ab2c651ac428ff ""
+  "c:/Users/szeto/Desktop/cs440/written assignment/wa1/main.tex" 1757700952 3964 8d7d5869db2841d475c51df2381a2e40 ""
+  "main.aux" 1757700954 162 87159b23cce7c2b923b11c85495bbd6d "pdflatex"
+  "main.out" 1757700954 0 d41d8cd98f00b204e9800998ecf8427e "pdflatex"
+  "main.tex" 1757700952 3964 8d7d5869db2841d475c51df2381a2e40 ""
   (generated)
   "main.aux"
   "main.log"

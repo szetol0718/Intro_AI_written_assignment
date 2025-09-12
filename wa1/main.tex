@@ -31,9 +31,6 @@ CS 440 \quad \today
 \noindent\textbf{Name: Yat Long Szeto} \quad
 \textbf{BU ID:  90479281} 
 
-\medskip
-\noindent\textbf{Collaborators (required): None}
-
 \bigskip
 
 \section*{Question 1: Shortest Path Composition}
@@ -52,44 +49,50 @@ contradicting optimality of $p^\ast$ as the cost of $\tilde p_1\cdot p_2$ is les
 \end{proof}
 
 \section*{Question 2: Iterative Deepening returns shortest paths}
-\begin{theorem}
-On an unweighted (unit-edge) graph, Iterative Deepening DFS with limits $1,2,3,\dots$ from a source $s$ returns, for any discovered vertex $v$, a path with the minimum number of edges.
-\end{theorem}
 
 \begin{proof}
-Let $\ell(v)$ be the shortest-path distance (in edges) from $s$ to $v$. For $d<\ell(v)$, depth-limited DFS cannot expose any $s$–$v$ path. When $d=\ell(v)$, a shortest $s$–$v$ path of length $\ell(v)$ is eligible and will be found during that pass; the procedure completes the whole $d=\ell(v)$ pass before running $d=\ell(v){+}1$. Therefore the first time $v$ is returned is at depth limit $\ell(v)$, with a shortest path.
+Let $\ell(v)$ be the shortest-path distance from $s$ to $v$, for some source node $s$ and some vertex $v$.
+For some depth limit d such $d<\ell(v)$, depth-limited DFS cannot expose any $s$–$v$ path.
+When $d=\ell(v)$, a shortest $s$–$v$ path of length $\ell(v)$ is eligible and will be found during that pass ($d=\ell(v)$). 
+Therefore the first time $v$ is returned is at depth limit $\ell(v)$, with a shortest path.
+
 \end{proof}
 
 \section*{Question 3: Diameter bound}
+
+\begin{proof}
+For any $u\neq v$, any simple $u$–$v$ path visits vertices at most once, 
+hence uses at most $|V|-1$ edges.
+ A shortest $u$–$v$ path is simple (otherwise remove a cycle to shorten it). 
+ So $\dist(u,v)\le |V|-1$ for all pairs, and the maximum over pairs is at most $|V|-1$.
+ The diameter is at most $|V|-1$.
+\end{proof}
+
+\section*{Question 4 — Dijkstra’s Algorithm and Shortest Paths}
+
 \begin{theorem}
-For any finite, undirected, unweighted graph $G=(V,E)$, the diameter satisfies $\mathrm{diam}(G)\le |V|-1$.
+Let $G=(V,E,w)$ be a directed graph with strictly positive edge weights $w(e)>0$. When Dijkstra’s algorithm is run from a source $s$ and it returns a path to any vertex $v$, the returned path has length $\delta(s,v)$, the true shortest-path distance from $s$ to $v$.
 \end{theorem}
 
 \begin{proof}
-Fix $u\neq v$. Any \emph{simple} $u$–$v$ path visits vertices at most once, hence uses at most $|V|-1$ edges. A shortest $u$–$v$ path is simple (otherwise remove a cycle to shorten it). So $\dist(u,v)\le |V|-1$ for all pairs, and the maximum over pairs is at most $|V|-1$.
+Assume for contradiction that some vertex is \emph{settled} with an incorrect label. 
+Let $v$ be the first such vertex extracted from the priority queue with $d[v]>\delta(s,v)$;
+ thus, every previously settled $u$ satisfies $d[u]=\delta(s,u)$.
+
+Consider a shortest $s\!\to\! v$ path $P$, and let $y$ be the first vertex on $P$ that is not yet settled just before $v$ is extracted; let $x$ be the predecessor of $y$ on $P$. By choice of $y$, $x$ is settled. By the induction hypothesis for earlier settled vertices, $d[x]=\delta(s,x)$. When $x$ was settled, the relaxation of edge $(x,y)$ gave
+\[
+d[y]\ \le\ d[x]+w(x,y)\ =\ \delta(s,x)+w(x,y)\ =\ \delta(s,y),
+\]
+and since $y$ lies on a shortest $s\!\to\! v$ path, we have $\delta(s,y)\le \delta(s,v)$. Hence
+\[
+d[y]\ \le\ \delta(s,v).
+\]
+Because Dijkstra extracts the unsettled vertex with minimum key, it holds that
+\[
+d[v]\ \le\ d[y]\ \le\ \delta(s,v),
+\]
+contradicting the assumption $d[v]>\delta(s,v)$. Therefore no such $v$ exists, and every vertex is settled with its true distance; in particular, the path returned to any $v$ is a shortest path.
 \end{proof}
 
-\section*{Question 4: Correctness of Dijkstra's algorithm\\(positive weights)}
-\begin{theorem}
-Let $G=(V,E,w)$ be directed with $w(e)>0$. Dijkstra’s algorithm from source $s$ settles each vertex $v$ with key $d[v]=\delta(s,v)$, the true shortest-path distance.
-\end{theorem}
-
-\begin{proof}[Loop invariant proof]
-\emph{Invariant.} (i) For every settled $u$, $d[u]=\delta(s,u)$. (ii) For every fringe $x$, $d[x]$ equals the minimum length of an $s$–$x$ path whose last edge enters from a settled predecessor.
-
-Initially only $s$ may be settled with $d[s]=0=\delta(s,s)$; relaxations preserve (ii). Suppose before an iteration the invariant holds and the algorithm extracts $v$ with minimal $d[v]$ among unsettled vertices. If $d[v]>\delta(s,v)$, take a shortest $s$–$v$ path and let $y$ be the first unsettled vertex on it with settled predecessor $x$. Then $d[x]=\delta(s,x)$ by (i), and relaxing $(x,y)$ gave $d[y]\le \delta(s,y)\le \delta(s,v)$. Minimality of $d[v]$ implies $d[v]\le d[y]\le \delta(s,v)$, a contradiction. Hence $d[v]=\delta(s,v)$ when settled; relaxations maintain (ii). By induction, the claim holds for all settled vertices.
-\end{proof}
-
-\bigskip
-\section*{Extra Credit (outline): Column-constrained top-to-bottom shortest path on a vertex-weighted lattice}
-
-\paragraph{Model.} $n\times n$ directed lattice; edges have weight $0$; each vertex $u$ has weight $w(u)>0$; path length is the sum of vertex weights (including the start).
-
-\paragraph{Goal.} For each column $i$, let $P_i$ be a shortest path from the top vertex $v_{1,i}$ to bottom vertex $v_{n,i}$. Output $P^\ast=\arg\min_i \mathrm{len}(P_i)$.
-
-\paragraph{Reduction using the given oracle.}
-Augment $G$ with super-source $s$ and super-sink $t$ of zero weight. Connect $s\to v_{1,i}$ for all $i$. To enforce that the path ends in the \emph{same} column, build, for each fixed $i$, a graph $G^{(i)}$ that includes only the edge $v_{n,i}\to t$ (delete $v_{n,j}\to t$ for $j\neq i$). One call to the oracle on $(G^{(i)},s,t)$ returns $P_i$. Take the best over $i$. This takes $O(n)$ oracle calls on $\Theta(n^2)$-size lattices (overall $O(n^3)$). If lateral moves cannot change the column at the bottom, a single call on the graph with all $v_{n,i}\to t$ suffices in $O(n^2)$.
-
-\paragraph{Correctness.} In $G^{(i)}$, any $s$–$t$ path must start at some $v_{1,i}$ and end at $v_{n,i}$; its cost equals the vertex-sum along the $v_{1,i}\leadsto v_{n,i}$ segment, i.e., the length of $P_i$. Minimizing over $i$ yields $P^\ast$.
 
 \end{document}
