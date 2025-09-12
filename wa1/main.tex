@@ -1,0 +1,95 @@
+% !TeX root = main.tex
+% !TeX program = pdflatex
+\documentclass[11pt]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true, linkcolor=black, urlcolor=blue}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem*{remark}{Remark}
+
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\dist}{\mathrm{dist}}
+
+\begin{document}
+
+\begin{center}
+{\Large \textbf{Written Assignment 1 — Solutions}}\\[0.25em]
+CS 440 \quad \today
+\end{center}
+
+\noindent\textbf{Name: Yat Long Szeto} \quad
+\textbf{BU ID:  90479281} 
+
+\medskip
+\noindent\textbf{Collaborators (required): None}
+
+\bigskip
+
+\section*{Question 1: Shortest Path Composition}
+
+\begin{proof}
+When considering the path from $a$ to $c$,
+suppose $p_1$ is not shortest from $a$ to $c$. 
+Then there exists an $a$ to $c$ path $\tilde p_1$ with $cost(\tilde p_1) < cost(p_1)$. 
+Concatenate to get an $a$ to $b$ walk $\tilde p_1\cdot p_2$ of cost
+\[
+cost(\tilde p_1)+cost(p_2) < cost(p_1)+cost(p_2)=cost(p^\ast),
+\]
+contradicting optimality of $p^\ast$ as the cost of $\tilde p_1\cdot p_2$ is less than $p^\ast$.
+ Hence $p_1$ is shortest $a\!\to\! c$ and there is no such $\tilde p_1$ exists.
+ The same argument with $(c,b)$ shows $p_2$ is shortest $c\!\to\! b$.
+\end{proof}
+
+\section*{Question 2: Iterative Deepening returns shortest paths}
+\begin{theorem}
+On an unweighted (unit-edge) graph, Iterative Deepening DFS with limits $1,2,3,\dots$ from a source $s$ returns, for any discovered vertex $v$, a path with the minimum number of edges.
+\end{theorem}
+
+\begin{proof}
+Let $\ell(v)$ be the shortest-path distance (in edges) from $s$ to $v$. For $d<\ell(v)$, depth-limited DFS cannot expose any $s$–$v$ path. When $d=\ell(v)$, a shortest $s$–$v$ path of length $\ell(v)$ is eligible and will be found during that pass; the procedure completes the whole $d=\ell(v)$ pass before running $d=\ell(v){+}1$. Therefore the first time $v$ is returned is at depth limit $\ell(v)$, with a shortest path.
+\end{proof}
+
+\section*{Question 3: Diameter bound}
+\begin{theorem}
+For any finite, undirected, unweighted graph $G=(V,E)$, the diameter satisfies $\mathrm{diam}(G)\le |V|-1$.
+\end{theorem}
+
+\begin{proof}
+Fix $u\neq v$. Any \emph{simple} $u$–$v$ path visits vertices at most once, hence uses at most $|V|-1$ edges. A shortest $u$–$v$ path is simple (otherwise remove a cycle to shorten it). So $\dist(u,v)\le |V|-1$ for all pairs, and the maximum over pairs is at most $|V|-1$.
+\end{proof}
+
+\section*{Question 4: Correctness of Dijkstra's algorithm\\(positive weights)}
+\begin{theorem}
+Let $G=(V,E,w)$ be directed with $w(e)>0$. Dijkstra’s algorithm from source $s$ settles each vertex $v$ with key $d[v]=\delta(s,v)$, the true shortest-path distance.
+\end{theorem}
+
+\begin{proof}[Loop invariant proof]
+\emph{Invariant.} (i) For every settled $u$, $d[u]=\delta(s,u)$. (ii) For every fringe $x$, $d[x]$ equals the minimum length of an $s$–$x$ path whose last edge enters from a settled predecessor.
+
+Initially only $s$ may be settled with $d[s]=0=\delta(s,s)$; relaxations preserve (ii). Suppose before an iteration the invariant holds and the algorithm extracts $v$ with minimal $d[v]$ among unsettled vertices. If $d[v]>\delta(s,v)$, take a shortest $s$–$v$ path and let $y$ be the first unsettled vertex on it with settled predecessor $x$. Then $d[x]=\delta(s,x)$ by (i), and relaxing $(x,y)$ gave $d[y]\le \delta(s,y)\le \delta(s,v)$. Minimality of $d[v]$ implies $d[v]\le d[y]\le \delta(s,v)$, a contradiction. Hence $d[v]=\delta(s,v)$ when settled; relaxations maintain (ii). By induction, the claim holds for all settled vertices.
+\end{proof}
+
+\bigskip
+\section*{Extra Credit (outline): Column-constrained top-to-bottom shortest path on a vertex-weighted lattice}
+
+\paragraph{Model.} $n\times n$ directed lattice; edges have weight $0$; each vertex $u$ has weight $w(u)>0$; path length is the sum of vertex weights (including the start).
+
+\paragraph{Goal.} For each column $i$, let $P_i$ be a shortest path from the top vertex $v_{1,i}$ to bottom vertex $v_{n,i}$. Output $P^\ast=\arg\min_i \mathrm{len}(P_i)$.
+
+\paragraph{Reduction using the given oracle.}
+Augment $G$ with super-source $s$ and super-sink $t$ of zero weight. Connect $s\to v_{1,i}$ for all $i$. To enforce that the path ends in the \emph{same} column, build, for each fixed $i$, a graph $G^{(i)}$ that includes only the edge $v_{n,i}\to t$ (delete $v_{n,j}\to t$ for $j\neq i$). One call to the oracle on $(G^{(i)},s,t)$ returns $P_i$. Take the best over $i$. This takes $O(n)$ oracle calls on $\Theta(n^2)$-size lattices (overall $O(n^3)$). If lateral moves cannot change the column at the bottom, a single call on the graph with all $v_{n,i}\to t$ suffices in $O(n^2)$.
+
+\paragraph{Correctness.} In $G^{(i)}$, any $s$–$t$ path must start at some $v_{1,i}$ and end at $v_{n,i}$; its cost equals the vertex-sum along the $v_{1,i}\leadsto v_{n,i}$ segment, i.e., the length of $P_i$. Minimizing over $i$ yields $P^\ast$.
+
+\end{document}
