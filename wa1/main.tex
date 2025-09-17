@@ -35,39 +35,54 @@ CS 440 \quad \today
 
 \section*{Question 1: Shortest Path Composition}
 
-\noindent\textbf{Answer}\\
+\noindent\textbf{Proof}\\
 \begin{align*}
-p^\ast &= p_1 \cdot p_2 &\text{split the $a\!\to\! b$ path at $c$ (concatenation)}\\
+p^\ast &= p_1 \cdot p_2 &\text{split $a\!\to\! b$ path at $c$}\\
 \text{cost}(p^\ast) &= \text{cost}(p_1) + \text{cost}(p_2) &\text{path cost additivity}\\
-\exists\,\tilde p_1:\ \text{cost}(\tilde p_1) &< \text{cost}(p_1) &\text{assumption for contradiction}\\
-\text{cost}(\tilde p_1\!\cdot\! p_2) &= \text{cost}(\tilde p_1) + \text{cost}(p_2) &\text{additivity}\\
+\exists\,\tilde p_1:\ \text{cost}(\tilde p_1) &< \text{cost}(p_1) &\text{assume $p_1$ not shortest}\\
+\text{cost}(\tilde p_1 \cdot p_2) &= \text{cost}(\tilde p_1) + \text{cost}(p_2) &\text{concatenate paths}\\
 &< \text{cost}(p_1) + \text{cost}(p_2) &\text{by assumption}\\
-&= \text{cost}(p^\ast) &\text{from the first two lines}
+&= \text{cost}(p^\ast) &\text{substitution}
 \end{align*}
 
-Since $\text{cost}(\tilde p_1\!\cdot\! p_2) < \text{cost}(p^\ast)$, 
-this contradicts that $p^\ast$ is a shortest $a\!\to\! b$ path. 
-Hence $p_1$ must be shortest $a\!\to\! c$. By the same argument, $p_2$ is shortest $c\!\to\! b$.
+This contradicts the optimality of $p^\ast$.
+Therefore $p_1$ must be a shortest $a\!\to\! c$ path and there is no such $\tilde p_1$ exists.  
+WLOG, replace the prefix $p_1$ by the suffix $p_2$ and $c$ by $b$. 
+The same reasoning shows that if $p_2$ were not shortest $c\!\to\! b$, 
+then replacing it with a shorter path would also contradict the optimality of $p^\ast$. 
+Hence $p_2$ is a shortest $c\!\to\! b$ path as well.
+
+\section*{Question 2: Iterative Deepening Returns Shortest Paths}
+
+\noindent\textbf{Proof}\\
+\begin{align*}
+\ell(v) &= \min\{\text{length}(P): P \text{ is an $s\!\to\! v$ path}\} &\text{define shortest distance}\\
+\text{When IDDFS, } d < \ell(v) &\;\Rightarrow\; \text{$v$ not found} &\text{too shallow}\\
+d = \ell(v) &\;\Rightarrow\; \text{$v$ reachable} &\text{path length fits}\\
+\text{IDDFS finishes depth } d &= \ell(v) \text{ before } d+1 &\text{order of search}\\
+v \text{ first discovered} &= \text{ at depth } \ell(v) &\text{cannot appear earlier}\\
+\end{align*}
+
+Therefore, the first time $v$ is returned by Iterative Deepening is exactly at depth $\ell(v)$, and the path has the minimum number of edges.
 
 
-\section*{Question 2: Iterative Deepening returns shortest paths}
-\begin{theorem}
-On an unweighted (unit-edge) graph, Iterative Deepening DFS with limits $1,2,3,\dots$ from a source $s$ returns, for any discovered vertex $v$, a path with the minimum number of edges.
-\end{theorem}
+\section*{Question 3: Diameter Bound}
 
-\begin{proof}
-Let $\ell(v)$ be the shortest-path distance (in edges) from $s$ to $v$. For $d<\ell(v)$, depth-limited DFS cannot expose any $s$–$v$ path. When $d=\ell(v)$, a shortest $s$–$v$ path of length $\ell(v)$ is eligible and will be found during that pass; the procedure completes the whole $d=\ell(v)$ pass before running $d=\ell(v){+}1$. Therefore the first time $v$ is returned is at depth limit $\ell(v)$, with a shortest path.
-\end{proof}
+\noindent\textbf{Proof}\\
+\begin{align*}
+\text{Fix }u,v\in V,\ u&\neq v. &\text{setup}\\
+W &= (v_0,\ldots,v_k),\ v_0=u,\ v_k=v &\text{a $u\!\to\! v$ walk of minimum length}\\
+\exists\, i<j:\ v_i&=v_j \ \Rightarrow\ W'=(v_0,\ldots,v_i,v_{j+1},\ldots,v_k) &\text{delete cycle}\\
+\operatorname{len}(W')&=k-(j-i) < k=\operatorname{len}(W) &\text{strictly shorter}\\
+\Rightarrow\ \neg\exists\, i<j:\ v_i&=v_j &\text{contradiction to minimality}\\
+\Rightarrow\ W&\text{ is simple} &\text{no repetitions}\\[3pt]
+\text{Let }P=W,\ |P|&=m\ \text{(edges)} \ \Rightarrow\ \text{$P$ visits }m+1\text{ distinct vertices} &\text{path has one more vertex}\\
+m+1 &\le |V| \ \Rightarrow\ m\le |V|-1 &\text{counting bound}\\
+\operatorname{dist}(u,v) &= |P| \le |V|-1 &\text{shortest path equals $|P|$}\\
+\operatorname{diam}(G) &= \max_{u\neq v}\operatorname{dist}(u,v) \le |V|-1 &\text{take max}
+\end{align*}
 
-\section*{Question 3: Diameter bound}
 
-\begin{proof}
-For any $u\neq v$, any simple $u$–$v$ path visits vertices at most once, 
-hence uses at most $|V|-1$ edges.
- A shortest $u$–$v$ path is simple (otherwise remove a cycle to shorten it). 
- So $\dist(u,v)\le |V|-1$ for all pairs, and the maximum over pairs is at most $|V|-1$.
- The diameter is at most $|V|-1$.
-\end{proof}
 
 \section*{Question 4 — Dijkstra’s Algorithm and Shortest Paths}
 
